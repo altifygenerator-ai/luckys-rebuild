@@ -1,0 +1,15 @@
+import { NextResponse } from "next/server";
+import { getRiverData } from "@/lib/river";
+
+export const revalidate = 300;
+
+export async function GET() {
+  try {
+    const data = await getRiverData();
+    return NextResponse.json(data, {
+      headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" },
+    });
+  } catch {
+    return NextResponse.json({ error: "River data is temporarily unavailable." }, { status: 503 });
+  }
+}
