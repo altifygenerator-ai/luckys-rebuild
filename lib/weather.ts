@@ -2,7 +2,7 @@ const LATITUDE = 34.3268;
 const LONGITUDE = -93.5507;
 const NWS_HEADERS = {
   Accept: "application/geo+json",
-  "User-Agent": "caddocanoeandkayak.com (info@caddocanoeandkayak.com)",
+  "User-Agent": "luckyscanoeandcabin.com (info@caddocanoeandkayak.com)",
 };
 
 export type WeatherPeriod = {

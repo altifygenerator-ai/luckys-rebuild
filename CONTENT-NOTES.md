@@ -30,3 +30,11 @@ This build intentionally does not invent prices, routes, booking rules, or ameni
 - The rebuilt blue weather strip uses the official National Weather Service point forecast for Glenwood/Caddo River.
 - It displays the current hourly forecast, seven daytime highs with following nighttime lows, precipitation chance, and active weather alerts.
 - It links back to the official NWS forecast and does not make river-operation decisions.
+
+## Domain and SEO setup
+
+- The configured default canonical URL is `https://luckyscanoeandcabin.com`.
+- Change `NEXT_PUBLIC_SITE_URL` before the production build if the final domain is different.
+- Page titles, descriptions, canonical tags, social-sharing images, sitemap entries, robots rules, breadcrumbs, and page-specific structured data are included.
+- Search schema only contains details visible on the site or already preserved from the original public content.
+- The footer includes a linked Hometown Web Services credit.

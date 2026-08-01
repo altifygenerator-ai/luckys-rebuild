@@ -1,9 +1,24 @@
 import Image from "next/image";
+import { JsonLd } from "@/components/JsonLd";
 import Link from "next/link";
 import { ContactSection } from "@/components/ContactSection";
 import { MapAndVisit, WeatherLink } from "@/components/SiteDetails";
 import { RiverLevels } from "@/components/RiverLevels";
 import { site } from "@/lib/site";
+import { webPageSchema } from "@/lib/seo";
+
+
+const homeSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    webPageSchema({
+      name: "Caddo River Canoe, Kayak & Cabin Rentals | Lucky's",
+      description: site.description,
+      path: "/",
+      image: "/seo/home-og.jpg",
+    }),
+  ],
+};
 
 const floats = [
   { title: "Tube Float", image: "/images/tube-float-new.jpg", alt: "Guests tubing on the river", mark: "○", text: "For those days when the time doesn’t matter and you have no place to be. Join us for a lazy trip down the river." },
@@ -78,6 +93,7 @@ export default function HomePage() {
       <div className="shell river-section-wrap"><RiverLevels /></div>
       <MapAndVisit />
       <ContactSection />
+      <JsonLd data={homeSchema} />
     </>
   );
 }

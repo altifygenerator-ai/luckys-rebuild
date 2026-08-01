@@ -2,14 +2,77 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { PageHero } from "@/components/PageHero";
 import { ContactSection } from "@/components/ContactSection";
+import { JsonLd } from "@/components/JsonLd";
 import { MapAndVisit, WeatherLink } from "@/components/SiteDetails";
 import { RiverLevels } from "@/components/RiverLevels";
-import { site } from "@/lib/site";
+import { absoluteUrl, site } from "@/lib/site";
+import { breadcrumbSchema, createPageMetadata, schemaIds, webPageSchema } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Camping & Lodging",
-  description: "Tent camping and RV sites on the Caddo River at Lucky's near Glenwood, Arkansas.",
-  alternates: { canonical: "/camping" },
+export const metadata: Metadata = createPageMetadata({
+  title: "Caddo River Camping & RV Sites",
+  description: "Tent camping and RV sites on the Caddo River at Lucky's near Glenwood, Arkansas, with river access, a bathhouse, and select hookups.",
+  path: "/camping",
+  image: "/seo/camping-og.jpg",
+  imageAlt: "Guests camping at Lucky's near the Caddo River in Glenwood, Arkansas",
+  keywords: [
+    "Caddo River camping",
+    "Caddo River RV sites",
+    "camping in Glenwood Arkansas",
+    "river camping Arkansas",
+    "Lucky's campground",
+  ],
+});
+
+const campingSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    webPageSchema({
+      name: "Caddo River Camping and RV Sites",
+      description: "Tent camping and RV sites on the Caddo River near Glenwood, Arkansas.",
+      path: "/camping",
+      image: "/seo/camping-og.jpg",
+    }),
+    breadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Camping", path: "/camping" },
+    ]),
+    {
+      "@type": "Service",
+      "@id": `${absoluteUrl("/camping")}#service`,
+      name: "Caddo River Tent and RV Camping",
+      description: "Tent camping and RV sites with river access, a bathhouse, hot showers, and select electric and water hookups.",
+      url: absoluteUrl("/camping"),
+      serviceType: "Tent camping and RV sites",
+      provider: { "@id": schemaIds.business },
+      areaServed: {
+        "@type": "Place",
+        name: "Caddo River near Glenwood, Arkansas",
+      },
+      image: [absoluteUrl("/seo/camping-og.jpg"), absoluteUrl("/images/campground-guests.jpg")],
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Camping options",
+        itemListElement: [
+          {
+            "@type": "Offer",
+            name: "Tent camping",
+            description: "$10 per person over age 12.",
+            price: 10,
+            priceCurrency: "USD",
+            itemOffered: { "@type": "Service", name: "Tent camping" },
+          },
+          {
+            "@type": "Offer",
+            name: "RV site",
+            description: "$25 per night with 30-amp electrical service and water. No sewer hookups or dump station.",
+            price: 25,
+            priceCurrency: "USD",
+            itemOffered: { "@type": "Service", name: "RV camping site" },
+          },
+        ],
+      },
+    },
+  ],
 };
 
 export default function CampingPage() {
@@ -52,6 +115,7 @@ export default function CampingPage() {
       <div className="shell river-section-wrap"><RiverLevels /></div>
       <MapAndVisit />
       <ContactSection />
+      <JsonLd data={campingSchema} />
     </>
   );
 }

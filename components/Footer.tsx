@@ -28,6 +28,9 @@ export function Footer() {
         </div>
         <div className="shell footer-bottom">
           <span>© {new Date().getFullYear()} Lucky&apos;s. All rights reserved.</span>
+          <span className="site-credit">
+            Website by <a href={site.hometownWebServicesUrl} target="_blank" rel="noopener noreferrer">Hometown Web Services</a>
+          </span>
         </div>
       </footer>
       <div className="mobile-action-bar" aria-label="Quick contact">

@@ -4,13 +4,61 @@ import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { RiverLevels } from "@/components/RiverLevels";
 import { ContactSection } from "@/components/ContactSection";
+import { JsonLd } from "@/components/JsonLd";
 import { MapAndVisit, WeatherLink } from "@/components/SiteDetails";
-import { site } from "@/lib/site";
+import { absoluteUrl, site } from "@/lib/site";
+import { breadcrumbSchema, createPageMetadata, schemaIds, webPageSchema } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Float Trips",
-  description: "Canoe, kayak, tube, and raft float trips on the Caddo River near Glenwood, Arkansas.",
-  alternates: { canonical: "/float-trips" },
+export const metadata: Metadata = createPageMetadata({
+  title: "Caddo River Float Trips in Glenwood, AR",
+  description: "Plan a Caddo River float trip with canoe, kayak, tube, and raft rentals from Lucky's near Glenwood, Arkansas. Call for current availability.",
+  path: "/float-trips",
+  image: "/seo/float-trips-og.jpg",
+  imageAlt: "Colorful kayaks and guests at Lucky's on the Caddo River",
+  keywords: [
+    "Caddo River float trips",
+    "Caddo River canoe rental",
+    "Caddo River kayak rental",
+    "Caddo River tube rental",
+    "Glenwood Arkansas float trip",
+  ],
+});
+
+const floatTripsSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    webPageSchema({
+      name: "Caddo River Float Trips in Glenwood, Arkansas",
+      description: "Canoe, kayak, tube, and raft float trips on the Caddo River near Glenwood, Arkansas.",
+      path: "/float-trips",
+      image: "/seo/float-trips-og.jpg",
+    }),
+    breadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Float Trips", path: "/float-trips" },
+    ]),
+    {
+      "@type": "Service",
+      "@id": `${absoluteUrl("/float-trips")}#service`,
+      name: "Caddo River Float Trips and Paddlecraft Rentals",
+      description: "Canoe, kayak, tube, and raft rentals for float trips on the Caddo River near Glenwood, Arkansas.",
+      url: absoluteUrl("/float-trips"),
+      serviceType: "Canoe, kayak, tube, and raft rentals",
+      provider: { "@id": schemaIds.business },
+      areaServed: {
+        "@type": "Place",
+        name: "Caddo River near Glenwood, Arkansas",
+      },
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Float options",
+        itemListElement: ["Tube rental", "Canoe rental", "Kayak rental", "Raft rental"].map((name) => ({
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name },
+        })),
+      },
+    },
+  ],
 };
 
 export default function FloatTripsPage() {
@@ -51,6 +99,7 @@ export default function FloatTripsPage() {
       <div className="shell river-section-wrap"><RiverLevels /></div>
       <MapAndVisit />
       <ContactSection />
+      <JsonLd data={floatTripsSchema} />
     </>
   );
 }

@@ -1,16 +1,27 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { ContactSection } from "@/components/ContactSection";
+import { JsonLd } from "@/components/JsonLd";
 import { MapAndVisit, WeatherLink } from "@/components/SiteDetails";
 import { RiverLevels } from "@/components/RiverLevels";
 import { CabinGallery, type CabinPhoto } from "@/components/CabinGallery";
-import { site } from "@/lib/site";
+import { absoluteUrl, site } from "@/lib/site";
+import { breadcrumbSchema, createPageMetadata, schemaIds, webPageSchema } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Cabin Rentals",
-  description: "Cabin rentals at Lucky's near the Caddo River in Glenwood, Arkansas.",
-  alternates: { canonical: "/cabins" },
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Caddo River Cabin Rentals in Glenwood, AR",
+  description: "View three Lucky's cabin rentals near the Caddo River in Glenwood, Arkansas, with actual interior photos, amenities, rates, and policies.",
+  path: "/cabins",
+  image: "/seo/cabins-og.jpg",
+  imageAlt: "Aerial view of Lucky's cabins in the wooded hills near the Caddo River",
+  keywords: [
+    "Caddo River cabin rentals",
+    "cabins in Glenwood Arkansas",
+    "cabins near Caddo River",
+    "Lucky's cabins",
+    "Glenwood Arkansas lodging",
+  ],
+});
 
 type Cabin = {
   name: string;
@@ -81,6 +92,92 @@ const cabins: Cabin[] = [
     ],
   },
 ];
+
+const cabinsSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    webPageSchema({
+      name: "Caddo River Cabin Rentals in Glenwood, Arkansas",
+      description: "Three cabin rentals near the Caddo River with actual photos, amenities, rates, and policies.",
+      path: "/cabins",
+      image: "/seo/cabins-og.jpg",
+    }),
+    breadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Cabins", path: "/cabins" },
+    ]),
+    {
+      "@type": "LodgingBusiness",
+      "@id": `${absoluteUrl("/cabins")}#lodging`,
+      name: "Lucky's Caddo River Cabin Rentals",
+      description: "Three cabin rentals near the Caddo River in Glenwood, Arkansas.",
+      url: absoluteUrl("/cabins"),
+      parentOrganization: { "@id": schemaIds.business },
+      telephone: site.phoneE164,
+      email: site.email,
+      address: { "@type": "PostalAddress", ...site.address },
+      image: [absoluteUrl("/seo/cabins-og.jpg"), absoluteUrl("/images/cabins-aerial-hero.jpg")],
+      petsAllowed: false,
+      amenityFeature: [
+        ["Wi-Fi", true],
+        ["Television", true],
+        ["Kitchen area", true],
+        ["Private bathroom", true],
+        ["Outdoor grill", true],
+        ["Picnic table", true],
+        ["Smoking", false],
+      ].map(([name, value]) => ({
+        "@type": "LocationFeatureSpecification",
+        name,
+        value,
+      })),
+      containsPlace: cabins.map((cabin, index) => ({
+        "@type": "VacationRental",
+        "@id": `${absoluteUrl("/cabins")}#cabin-${index + 1}`,
+        name: `Lucky's ${cabin.name}`,
+        url: absoluteUrl("/cabins"),
+        sameAs: `https://www.vrbo.com/${cabin.vrbo}`,
+        image: cabin.photos.map((photo) => absoluteUrl(photo.src)),
+        floorSize: {
+          "@type": "QuantitativeValue",
+          value: Number(cabin.size.replace(/[^0-9]/g, "")),
+          unitCode: "FTK",
+          unitText: "square feet",
+        },
+        occupancy: {
+          "@type": "QuantitativeValue",
+          maxValue: 4,
+        },
+        amenityFeature: [
+          "Queen bed",
+          "Futon bed",
+          "Kitchen area",
+          "Private bathroom",
+          "Wi-Fi",
+          "Television",
+          "Outdoor grill",
+          "Picnic table",
+          cabin.porch,
+        ].map((name) => ({
+          "@type": "LocationFeatureSpecification",
+          name,
+          value: true,
+        })),
+      })),
+      offers: {
+        "@type": "Offer",
+        url: absoluteUrl("/cabins"),
+        description: "$150 per day with a two-day minimum. Call for current availability.",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: 150,
+          priceCurrency: "USD",
+          unitText: "DAY",
+        },
+      },
+    },
+  ],
+};
 
 export default function CabinsPage() {
   return (
@@ -155,6 +252,7 @@ export default function CabinsPage() {
       <div className="shell river-section-wrap"><RiverLevels /></div>
       <MapAndVisit />
       <ContactSection />
+      <JsonLd data={cabinsSchema} />
     </>
   );
 }

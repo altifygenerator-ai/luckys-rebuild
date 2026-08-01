@@ -1,14 +1,41 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { ContactSection } from "@/components/ContactSection";
+import { JsonLd } from "@/components/JsonLd";
 import { MapAndVisit, WeatherLink } from "@/components/SiteDetails";
 import { RiverLevels } from "@/components/RiverLevels";
 import { site } from "@/lib/site";
+import { breadcrumbSchema, createPageMetadata, webPageSchema } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Things To Know",
-  description: "Rules and suggested items for canoe, kayak, and inner tube trips on Arkansas waterways.",
-  alternates: { canonical: "/things-to-know" },
+export const metadata: Metadata = createPageMetadata({
+  title: "Caddo River Rules & What to Bring",
+  description: "Review Arkansas river rules and suggested items before a canoe, kayak, or tube trip on the Caddo River with Lucky's near Glenwood.",
+  path: "/things-to-know",
+  image: "/seo/things-to-know-og.jpg",
+  imageAlt: "Guests launching kayaks for a trip on the Caddo River",
+  keywords: [
+    "Caddo River rules",
+    "what to bring Caddo River",
+    "Arkansas river glass container law",
+    "Caddo River canoe trip checklist",
+    "Caddo River kayak safety",
+  ],
+});
+
+const thingsToKnowSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    webPageSchema({
+      name: "Caddo River Rules and What to Bring",
+      description: "Arkansas river rules and suggested items for canoe, kayak, and tube trips on the Caddo River.",
+      path: "/things-to-know",
+      image: "/seo/things-to-know-og.jpg",
+    }),
+    breadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Things To Know", path: "/things-to-know" },
+    ]),
+  ],
 };
 
 const rules = [
@@ -48,6 +75,7 @@ export default function ThingsToKnowPage() {
       <div className="shell river-section-wrap"><RiverLevels /></div>
       <MapAndVisit />
       <ContactSection />
+      <JsonLd data={thingsToKnowSchema} />
     </>
   );
 }
