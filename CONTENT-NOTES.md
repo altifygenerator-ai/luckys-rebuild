@@ -9,7 +9,7 @@ This build intentionally does not invent prices, routes, booking rules, or ameni
 - Fishing and camping mentions
 - Six-mile float description into Glenwood
 - Three cabin sizes, porch sizes, amenities, rates, rules, and VRBO property numbers
-- Supplied cabin photos grouped into Cabin One, Cabin Two, and Cabin Three galleries
+- Supplied cabin photos grouped into separate Cabin One, Cabin Two, and Cabin Three pages linked from the main Cabins page
 - Supplied Lucky's river, launch, tube, kayak, canoe, and office photos placed in the matching site sections
 - Tent and RV camping prices and listed amenities
 - Arkansas waterway rules and suggested outing items
@@ -35,6 +35,6 @@ This build intentionally does not invent prices, routes, booking rules, or ameni
 
 - The configured default canonical URL is `https://luckyscanoeandcabin.com`.
 - Change `NEXT_PUBLIC_SITE_URL` before the production build if the final domain is different.
-- Page titles, descriptions, canonical tags, social-sharing images, sitemap entries, robots rules, breadcrumbs, and page-specific structured data are included.
+- Page titles, descriptions, canonical tags, social-sharing images, sitemap entries, robots rules, breadcrumbs, and page-specific structured data are included, including separate SEO routes for all three cabins.
 - Search schema only contains details visible on the site or already preserved from the original public content.
 - The footer includes a linked Hometown Web Services credit.

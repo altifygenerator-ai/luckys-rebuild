@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { cabins } from "@/lib/cabins";
 import { absoluteUrl } from "@/lib/site";
 
 const pages = [
@@ -20,6 +21,12 @@ const pages = [
     priority: 0.9,
     images: ["/seo/cabins-og.jpg", "/images/cabins-aerial-hero.jpg"],
   },
+  ...cabins.map((cabin) => ({
+    path: `/cabins/${cabin.slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
+    images: [cabin.coverImage, ...cabin.photos.slice(0, 4).map((photo) => photo.src)],
+  })),
   {
     path: "/camping",
     changeFrequency: "monthly" as const,

@@ -6,7 +6,10 @@ A faithful Next.js rebuild of Lucky's original website. The design follows the o
 
 - Home
 - Float Trips
-- Cabins
+- Cabins overview
+- Cabin One
+- Cabin Two
+- Cabin Three
 - Camping
 - Things To Know
 - Branded 404 page
@@ -17,7 +20,8 @@ A faithful Next.js rebuild of Lucky's original website. The design follows the o
 - Supplied Lucky's logo in the overlapping header position
 - Blue photographic hero treatments and wave dividers inspired by the original site
 - Original-style Tube, Canoe, and Kayak photo blocks using supplied Lucky's river photos
-- Cabin One, Cabin Two, and Cabin Three galleries with supplied interior, exterior, porch, and river-view photos
+- A cabin overview page linking to separate Cabin One, Cabin Two, and Cabin Three detail pages
+- Supplied interior, exterior, porch, and river-view photos kept in the correct cabin gallery
 - Keyboard-accessible cabin photo lightbox with previous, next, and close controls
 - Simple rectangular buttons and straightforward sections instead of rounded SaaS cards or invented tourism content
 - Responsive navigation and a mobile Call / Email / Directions bar
@@ -33,7 +37,7 @@ https://luckyscanoeandcabin.com
 
 Change `NEXT_PUBLIC_SITE_URL` before building if the final domain changes. The SEO setup includes:
 
-- Unique title and description metadata for every public page
+- Unique title and description metadata for every public page, including all three cabin pages
 - Canonical URLs based on one configurable site URL
 - Page-specific Open Graph and Twitter metadata
 - Five custom 1200 × 630 social-sharing images made from the supplied Lucky's photos

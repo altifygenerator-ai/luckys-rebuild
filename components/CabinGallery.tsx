@@ -3,10 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-export type CabinPhoto = {
-  src: string;
-  alt: string;
-};
+import type { CabinPhoto } from "@/lib/cabins";
 
 export function CabinGallery({ cabinName, photos }: { cabinName: string; photos: CabinPhoto[] }) {
   const [active, setActive] = useState<number | null>(null);
