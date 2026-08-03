@@ -38,3 +38,7 @@ This build intentionally does not invent prices, routes, booking rules, or ameni
 - Page titles, descriptions, canonical tags, social-sharing images, sitemap entries, robots rules, breadcrumbs, and page-specific structured data are included, including separate SEO routes for all three cabins.
 - Search schema only contains details visible on the site or already preserved from the original public content.
 - The footer includes a linked Hometown Web Services credit.
+## Confirmed cash pricing added
+
+The August 2026 cash-price sheet has been added to the Float Trips page, with matching camping and cabin price notices. Credit-card transactions are noted as carrying a 10% charge plus applicable processing fees. No online payment checkout was added.
+

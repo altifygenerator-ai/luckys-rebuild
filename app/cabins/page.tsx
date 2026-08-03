@@ -87,7 +87,7 @@ const cabinsSchema = {
       offers: {
         "@type": "Offer",
         url: absoluteUrl("/cabins"),
-        description: "$150 per day with a two-day minimum. Call for current availability.",
+        description: "$150 cash price per night with a two-night minimum. Credit-card transactions have a 10% charge plus applicable processing fees. Call for availability.",
         priceSpecification: {
           "@type": "UnitPriceSpecification",
           price: 150,

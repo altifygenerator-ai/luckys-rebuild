@@ -17,8 +17,8 @@ export function CabinStayInfo() {
           <div className="rate-block">
             <span>Current listed rate</span>
             <strong>$150</strong>
-            <small>per day, with a two-day minimum</small>
-            <p>The two-day minimum also applies around three-day holiday weekends.</p>
+            <small>cash price per night, with a two-night minimum</small>
+            <p>The two-night minimum also applies around three-day holiday weekends. Credit-card transactions are subject to a 10% charge plus applicable card-processing fees.</p>
           </div>
         </div>
       </section>

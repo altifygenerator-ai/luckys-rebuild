@@ -97,8 +97,15 @@ export default function CampingPage() {
 
       <section className="rates-section">
         <div className="shell rate-lines">
-          <article><div><p className="eyebrow light">Bring your own tent</p><h2>Tent Camping</h2><p>After a day on the river, relax and stay the night. A shower house and other amenities are included while you stay.</p></div><div className="price-mark"><strong>$10</strong><span>per person over 12</span></div></article>
-          <article><div><p className="eyebrow light">Camper and RV sites</p><h2>RV Sites</h2><p>Includes 30-amp electrical service and water. Bring your own water hose. There are no sewer hookups or dump station.</p></div><div className="price-mark"><strong>$25</strong><span>per night</span></div></article>
+          <article><div><p className="eyebrow light">Bring your own tent</p><h2>Tent Camping</h2><p>After a day on the river, relax and stay the night. A shower house and other amenities are included while you stay.</p></div><div className="price-mark"><strong>$10</strong><span>cash price, ages 12 and up</span></div></article>
+          <article><div><p className="eyebrow light">Camper and RV sites</p><h2>RV Sites</h2><p>Includes 30-amp electrical service and water. Bring your own water hose. There are no sewer hookups or dump station.</p></div><div className="price-mark"><strong>$25</strong><span>cash price per night</span></div></article>
+        </div>
+      </section>
+
+      <section className="payment-note-section">
+        <div className="shell payment-note">
+          <strong>Cash prices</strong>
+          <p>Credit-card transactions are subject to a 10% charge plus applicable card-processing fees. RVs with an additional tent are $25 for the RV plus $10 per person.</p>
         </div>
       </section>
 

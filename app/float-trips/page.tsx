@@ -4,6 +4,7 @@ import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { RiverLevels } from "@/components/RiverLevels";
 import { ContactSection } from "@/components/ContactSection";
+import { PricingSection } from "@/components/PricingSection";
 import { JsonLd } from "@/components/JsonLd";
 import { MapAndVisit, WeatherLink } from "@/components/SiteDetails";
 import { absoluteUrl, site } from "@/lib/site";
@@ -52,8 +53,19 @@ const floatTripsSchema = {
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: "Float options",
-        itemListElement: ["Tube rental", "Canoe rental", "Kayak rental", "Raft rental"].map((name) => ({
+        itemListElement: [
+          { name: "Tube rental", price: 25 },
+          { name: "Canoe rental", price: 50 },
+          { name: "Single kayak rental", price: 35 },
+          { name: "Double kayak rental", price: 55 },
+          { name: "4-person raft rental", price: 100 },
+          { name: "5-person raft rental", price: 125 },
+          { name: "6-person raft rental", price: 150 },
+        ].map(({ name, price }) => ({
           "@type": "Offer",
+          price,
+          priceCurrency: "USD",
+          description: "Cash price. Quantity discounts may apply; call to confirm availability and current rates.",
           itemOffered: { "@type": "Service", name },
         })),
       },
@@ -96,6 +108,7 @@ export default function FloatTripsPage() {
         <div className="shell centered-action"><a className="button button-forest" href={site.phoneHref}>Call {site.phoneDisplay}</a><Link className="text-link" href="/things-to-know">Read the river rules</Link></div>
       </section>
 
+      <PricingSection />
       <div className="shell river-section-wrap"><RiverLevels /></div>
       <MapAndVisit />
       <ContactSection />
