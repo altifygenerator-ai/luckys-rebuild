@@ -1,5 +1,5 @@
 const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-const siteUrl = (configuredUrl || "https://luckyscanoeandcabin.com").replace(/\/+$/, "");
+const siteUrl = (configuredUrl || "https://www.luckyscanoeandcabin.com").replace(/\/+$/, "");
 
 export const site = {
   name: "Lucky's Canoe Rental",
