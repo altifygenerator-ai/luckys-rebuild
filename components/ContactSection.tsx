@@ -1,7 +1,10 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Script from "next/script";
 import { site } from "@/lib/site";
+
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 export function ContactSection() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -52,6 +55,12 @@ export function ContactSection() {
           <label>Email<input name="email" type="email" autoComplete="email" /></label>
           <label>Message<textarea name="message" rows={5} required /></label>
           <label className="honeypot" aria-hidden="true">Company<input name="company" tabIndex={-1} autoComplete="off" /></label>
+          {turnstileSiteKey && (
+            <>
+              <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="afterInteractive" />
+              <div className="cf-turnstile" data-sitekey={turnstileSiteKey} />
+            </>
+          )}
           <button className="button button-gold" type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending…" : "Send Message"}</button>
           {message && <p className={`form-status ${status}`} role="status">{message}</p>}
         </form>
