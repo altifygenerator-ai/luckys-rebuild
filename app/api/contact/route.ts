@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 function clean(value: unknown, max = 2000) {
-  return String(value ?? "").trim().slice(0, max);
+  return typeof value === "string" ? value.trim().slice(0, max) : "";
 }
 
 function escapeHtml(value: string) {
@@ -16,7 +16,31 @@ function escapeHtml(value: string) {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const contentType = request.headers.get("content-type") ?? "";
+    if (!contentType.toLowerCase().startsWith("application/json")) {
+      return NextResponse.json({ error: "Invalid request format." }, { status: 415 });
+    }
+
+    // Keep unexpected or oversized requests from reaching the email provider.
+    const declaredSize = Number(request.headers.get("content-length") ?? 0);
+    if (declaredSize > 12_000) {
+      return NextResponse.json({ error: "Message is too long." }, { status: 413 });
+    }
+    const rawBody = await request.text();
+    if (new TextEncoder().encode(rawBody).byteLength > 12_000) {
+      return NextResponse.json({ error: "Message is too long." }, { status: 413 });
+    }
+
+    // Browsers submitting from other sites should not be able to invoke this form.
+    const origin = request.headers.get("origin");
+    if (origin && origin !== new URL(request.url).origin) {
+      return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+    }
+
+    const body = JSON.parse(rawBody);
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return NextResponse.json({ error: "Invalid message." }, { status: 400 });
+    }
     if (clean(body.company)) return NextResponse.json({ ok: true });
 
     const name = clean(body.name, 120);
@@ -26,6 +50,38 @@ export async function POST(request: Request) {
 
     if (!name || !phone || !message) {
       return NextResponse.json({ error: "Please include your name, phone number, and message." }, { status: 400 });
+    }
+    const phoneDigits = phone.replace(/\D/g, "");
+    if (phoneDigits.length < 7 || phoneDigits.length > 15 || (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) {
+      return NextResponse.json({ error: "Please check your phone number and email." }, { status: 400 });
+    }
+
+    // Optional Cloudflare Turnstile challenge: enabled only after BOTH
+    // environment variables are configured in the deployment.
+    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+    const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+    if (turnstileSecret || turnstileSiteKey) {
+      if (!turnstileSecret || !turnstileSiteKey) {
+        return NextResponse.json({ error: "The contact form is temporarily unavailable. Please call Lucky's." }, { status: 503 });
+      }
+      const challenge = clean(body["cf-turnstile-response"], 2048);
+      if (!challenge) {
+        return NextResponse.json({ error: "Please complete the verification before sending." }, { status: 400 });
+      }
+      const verification = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ secret: turnstileSecret, response: challenge }),
+        signal: AbortSignal.timeout(7000),
+        cache: "no-store",
+      });
+      if (!verification.ok) {
+        return NextResponse.json({ error: "Verification is temporarily unavailable. Please call Lucky's." }, { status: 503 });
+      }
+      const verdict = await verification.json() as { success?: boolean };
+      if (!verdict.success) {
+        return NextResponse.json({ error: "Verification failed. Please try again." }, { status: 400 });
+      }
     }
 
     const apiKey = process.env.RESEND_API_KEY;
