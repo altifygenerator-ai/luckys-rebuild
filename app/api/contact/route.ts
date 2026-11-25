@@ -37,7 +37,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
     }
 
-    const body = JSON.parse(rawBody);
+    let body: Record<string, unknown>;
+    try {
+      body = JSON.parse(rawBody);
+    } catch {
+      return NextResponse.json({ error: "Invalid message." }, { status: 400 });
+    }
     if (!body || typeof body !== "object" || Array.isArray(body)) {
       return NextResponse.json({ error: "Invalid message." }, { status: 400 });
     }
